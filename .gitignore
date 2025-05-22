@@ -1,0 +1,53 @@
+# ───────── Python bytecode & cachés ─────────
+# Python compila cada módulo a archivos .pyc, .pyo o carpetas __pycache__. No los necesitas en el repositorio porque se generan de forma automática en cada ejecución, y aportan ruido.
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ───────── Virtual environments ─────────
+# Si usas python -m venv venv o herramientas que crean carpetas .env, contienen dependencias locales y binarios. No conviene versionarlos: otros clonan y crean su propio entorno.
+venv/
+.env/
+
+# ───────── Jupyter Notebook checkpoints ─────────
+# Cada vez que guardas un notebook, Jupyter crea una copia en .ipynb_checkpoints/. Es metadata local que no hace falta compartir.
+.ipynb_checkpoints/
+
+# ───────── Archivos generados ─────────
+# Las imágenes o PDF que exportas se regeneran; suelen pesar mucho y puedes reconstruirlas con tus scripts.
+
+/outputs/figuras/
+/outputs/predicciones/
+
+# ───────── IDEs y OS ─────────
+# Cada IDE (VS Code, PyCharm…) o sistema (macOS, Windows) deja ficheros de configuración o cache locales. No aportan al proyecto.
+*.suo
+*.user
+*.bat
+*.sw?
+.DS_Store
+Thumbs.db
+
+# Distribution / packaging
+# Cuando generas paquetes con python setup.py sdist bdist_wheel o similar, aparecen carpetas build/, dist/ y archivos *.egg-info/. No las quieres en Git, porque esos artefactos se recrean cada vez que empacas tu proyecto.
+build/
+dist/
+*.egg-info/
+
+# C extensions
+# Si en algún momento compilas módulos en C (por ejemplo con Cython), se generan archivos .so. Tampoco deben versionarse.
+*.so
+
+# Cachés varios
+# Algunas librerías crean .cache/ o archivos temporales .tmp. Mejor ignorarlos para no mezclarlos con tus datos de verdad.
+.cache/
+*.tmp
+
+# Archivos de datos crudos y procesados
+data/raw/
+data/processed/
+
+# Modelos entrenados
+models/
+*.pkl
