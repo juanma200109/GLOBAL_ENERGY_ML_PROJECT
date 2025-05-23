@@ -19,6 +19,7 @@ venv/
 
 /outputs/figuras/
 /outputs/predicciones/
+/outputs/html/
 
 # ───────── IDEs y OS ─────────
 # Cada IDE (VS Code, PyCharm…) o sistema (macOS, Windows) deja ficheros de configuración o cache locales. No aportan al proyecto.
