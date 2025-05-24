@@ -46,8 +46,8 @@ dist/
 *.tmp
 
 # Archivos de datos crudos y procesados
-data/raw/
-data/processed/
+data/original/
+data/procesados/
 
 # Modelos entrenados
 models/

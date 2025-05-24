@@ -39,7 +39,7 @@ def crear_histograma_multiples(data, columnas, titulo):
         axes[i].set_xlabel(columnas[i])
         axes[i].set_ylabel('Frecuencia')
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-    plt.savefig('../outputs/figuras/histogramas.png')
+    plt.savefig('../outputs/figuras/histogramas'+'_'+titulo+'_'+'.png')
     plt.show()
 
 # ==============================================================================
@@ -73,7 +73,7 @@ def crear_kde_multiples(data, columnas, titulo):
         axes[i].set_xlabel(columnas[i])
         axes[i].set_ylabel('Frecuencia')
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
-    plt.savefig('../outputs/figuras/kdes.png')
+    plt.savefig('../outputs/figuras/kdes'+'_'+titulo+'_'+'.png')
     plt.show()
 
 # ==============================================================================
@@ -203,9 +203,9 @@ def crear_grafico_lineas_interactivo(data, col_car1, col_car2, lista_col_datos, 
     # Mostrar el gráfico
     fig.show()
     # Guardar el gráfico como un archivo HTML
-    pio.write_html(fig, file='../outputs/html/grafico_lineas_interactivo.html', auto_open=True)
+    pio.write_html(fig, file='../outputs/html/grafico_lineas_interactivo'+'_'+titulo_base+'_'+'.html', auto_open=True)
 
-def crear_box_plot_interactivo(data, nombre_col1, lista_col_datos, etiqueta_eje_x, titulo_base):
+def crear_box_plot_interactivo(data, nombre_col1, lista_col_datos, etiqueta_eje_x, titulo_caracteristico):
     """
     Entradas:
         - data: Es la información que se va a graficar (dataframe).
@@ -213,7 +213,7 @@ def crear_box_plot_interactivo(data, nombre_col1, lista_col_datos, etiqueta_eje_
                        (variable categórica para los boxplots, ej: 'Country').
         - lista_col_datos: Lista de nombres de las columnas numéricas cuyos valores
                            se distribuirán en los boxplots (ej: ['Consumo_Total', 'Consumo_Per_Capita']).
-        - titulo_base: Título base del gráfico (string).
+        - titulo_caracteristico: Título base del gráfico (string).
         - etiqueta_eje_x: Etiqueta para el eje x del gráfico (string).
 
     Salida:
@@ -268,7 +268,7 @@ def crear_box_plot_interactivo(data, nombre_col1, lista_col_datos, etiqueta_eje_
             label=etiqueta_eje_y,
             method="update",
             args=[{"visible": visibles},
-                  {"title": f"{titulo_base} - Distribución de {etiqueta_eje_y} por {etiqueta_eje_x}",
+                  {"title": f"Distribución de {etiqueta_eje_y} por {etiqueta_eje_x}",
                    "yaxis_title": etiqueta_eje_y}]
         ))
 
@@ -284,7 +284,7 @@ def crear_box_plot_interactivo(data, nombre_col1, lista_col_datos, etiqueta_eje_
             yanchor="top"
         )],
         title={
-            'text': f"{titulo_base} - Distribución de {lista_col_datos[0].replace('_', ' ').title()} por {etiqueta_eje_x}",
+            'text': f"Distribución de {lista_col_datos[0].replace('_', ' ').title()} por {etiqueta_eje_x}",
             'x': 0.5,
             'xanchor': 'center'
         },
@@ -297,6 +297,6 @@ def crear_box_plot_interactivo(data, nombre_col1, lista_col_datos, etiqueta_eje_
     # Mostrar el gráfico
     fig.show()
     # Guardar el gráfico como un archivo HTML
-    pio.write_html(fig, file='../outputs/html/grafico_lineas_interactivo.html', auto_open=True)
+    pio.write_html(fig, file='../outputs/html/grafico_lineas_interactivo'+'_'+titulo_caracteristico+'_'+'.html', auto_open=True)
 
     
