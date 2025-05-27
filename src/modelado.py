@@ -326,10 +326,11 @@ def entrenar_modelo_clasificacion_base(X_train, y_train, X_test, y_test,
         - ruta_modelo: ruta para guardar el modelo entrenado
 
     Retorna:
-        - model_cls: modelo entrenado
+        - model_cls: modelo entrenado o cargado
     """
 
     if os.path.exists(ruta_modelo):
+        print("Cargando modelo base previamente entrenado...")
         model_cls = joblib.load(ruta_modelo)
     else:
         print("Entrenando modelo base RandomForestClassifier...")
@@ -345,22 +346,23 @@ def entrenar_modelo_clasificacion_base(X_train, y_train, X_test, y_test,
 
         model_cls.fit(X_train, y_train)
 
-        y_pred = model_cls.predict(X_test)
-        y_proba = model_cls.predict_proba(X_test)[:, 1]
-
-        # Evaluación
-        print(f"Accuracy Base: {accuracy_score(y_test, y_pred):.2f}")
-        print(f"Precision Base: {precision_score(y_test, y_pred):.2f}")
-        print(f"Recall Base: {recall_score(y_test, y_pred):.2f}")
-        print(f"F1-Score Base: {f1_score(y_test, y_pred):.2f}")
-        print(f"ROC AUC Base: {roc_auc_score(y_test, y_proba):.2f}")
-
         # Guardar modelo
         os.makedirs(os.path.dirname(ruta_modelo), exist_ok=True)
         joblib.dump(model_cls, ruta_modelo)
         print(f"Modelo guardado en: {ruta_modelo}")
 
-    # Visualización: Matriz de Confusión
+    # --- Evaluación del modelo ---
+    y_pred = model_cls.predict(X_test)
+    y_proba = model_cls.predict_proba(X_test)[:, 1]
+
+    print("\nEvaluación del modelo base:")
+    print(f"  - Accuracy:  {accuracy_score(y_test, y_pred):.2f}")
+    print(f"  - Precision: {precision_score(y_test, y_pred):.2f}")
+    print(f"  - Recall:    {recall_score(y_test, y_pred):.2f}")
+    print(f"  - F1-Score:  {f1_score(y_test, y_pred):.2f}")
+    print(f"  - ROC AUC:   {roc_auc_score(y_test, y_proba):.2f}")
+
+    # --- Visualización: Matriz de Confusión ---
     cm = confusion_matrix(y_test, y_pred)
     plt.figure(figsize=(6, 5))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", cbar=False,
@@ -376,6 +378,10 @@ def entrenar_modelo_clasificacion_base(X_train, y_train, X_test, y_test,
 
     return model_cls
 
+# ==============================================================================
+# Función para entrenar modelo Random Forest de clasificación optimizado
+# ==============================================================================
+
 def entrenar_modelo_clasificacion_tuned(X_train, y_train, X_test, y_test,
                                         ruta_modelo='../models/best_random_forest_classifier.joblib',
                                         tscv=None):
@@ -386,41 +392,49 @@ def entrenar_modelo_clasificacion_tuned(X_train, y_train, X_test, y_test,
     - X_train, y_train: datos de entrenamiento
     - X_test, y_test: datos de prueba
     - ruta_modelo: ruta para guardar el modelo entrenado
-    - tscv: estrategia de validación cruzada (TimeSeriesSplit)
+    - tscv: estrategia de validación cruzada (TimeSeriesSplit o int)
 
     Retorna:
-    - best_cls_model: modelo optimizado entrenado
+    - best_cls_model: modelo optimizado entrenado o cargado
     """
 
-    print("Iniciando búsqueda de hiperparámetros...")
+    if os.path.exists(ruta_modelo):
+        print("Cargando modelo previamente optimizado...")
+        best_cls_model = joblib.load(ruta_modelo)
+    else:
+        print("Iniciando búsqueda de hiperparámetros...")
 
-    # Espacio de búsqueda enfocado
-    param_grid_cls_tuned = {
-        'n_estimators': [120, 170, 200],
-        'max_depth': [11, 14, 16],
-        'min_samples_split': [4, 8],
-        'criterion': ['entropy']
-    }
+        # Espacio de búsqueda enfocado
+        param_grid_cls_tuned = {
+            'n_estimators': [120, 170, 200],
+            'max_depth': [11, 14, 16],
+            'min_samples_split': [4, 8],
+            'criterion': ['entropy']
+        }
 
-    # Instancia GridSearchCV
-    grid_search_cls = GridSearchCV(
-        RandomForestClassifier(random_state=42, class_weight='balanced', n_jobs=-1),
-        param_grid=param_grid_cls_tuned,
-        cv=tscv if tscv else 5,
-        scoring='roc_auc',
-        n_jobs=-1,
-        verbose=2
-    )
+        # Instancia GridSearchCV
+        grid_search_cls = GridSearchCV(
+            RandomForestClassifier(random_state=42, class_weight='balanced', n_jobs=-1),
+            param_grid=param_grid_cls_tuned,
+            cv=tscv if tscv else 5,
+            scoring='roc_auc',
+            n_jobs=-1,
+            verbose=2
+        )
 
-    grid_search_cls.fit(X_train, y_train)
+        # Entrenamiento
+        grid_search_cls.fit(X_train, y_train)
+        best_cls_model = grid_search_cls.best_estimator_
 
-    best_cls_model = grid_search_cls.best_estimator_
+        print(f"\nMejores parámetros encontrados: {grid_search_cls.best_params_}")
+        print(f"Mejor ROC AUC en validación cruzada: {grid_search_cls.best_score_:.2f}")
 
-    # Reporte de mejores parámetros y desempeño en CV
-    print(f"\nMejores parámetros encontrados: {grid_search_cls.best_params_}")
-    print(f"Mejor ROC AUC en validación cruzada: {grid_search_cls.best_score_:.2f}")
+        # Guardar modelo
+        os.makedirs(os.path.dirname(ruta_modelo), exist_ok=True)
+        joblib.dump(best_cls_model, ruta_modelo)
+        print(f"\nModelo optimizado guardado en: {ruta_modelo}")
 
-    # Evaluación en el conjunto de prueba
+    # Evaluación y visualización (ya sea cargado o entrenado)
     y_pred = best_cls_model.predict(X_test)
     y_proba = best_cls_model.predict_proba(X_test)[:, 1]
 
@@ -431,12 +445,7 @@ def entrenar_modelo_clasificacion_tuned(X_train, y_train, X_test, y_test,
     print(f"  - F1-Score:  {f1_score(y_test, y_pred):.2f}")
     print(f"  - ROC AUC:   {roc_auc_score(y_test, y_proba):.2f}")
 
-    # Guardar el mejor modelo
-    os.makedirs(os.path.dirname(ruta_modelo), exist_ok=True)
-    joblib.dump(best_cls_model, ruta_modelo)
-    print(f"\nModelo optimizado guardado en: {ruta_modelo}")
-
-    # Visualizar matriz de confusión
+    # Visualización de la matriz de confusión
     cm = confusion_matrix(y_test, y_pred)
     plt.figure(figsize=(6, 5))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Purples", cbar=False,
