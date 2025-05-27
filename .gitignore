@@ -21,6 +21,10 @@ venv/
 /outputs/predicciones/
 /outputs/html/
 /outputs/prophet_forecasts/
+/outputs/xgb/
+/outputs/forest/
+/models/forest_model/
+/models/prophet_models/
 
 # ───────── IDEs y OS ─────────
 # Cada IDE (VS Code, PyCharm…) o sistema (macOS, Windows) deja ficheros de configuración o cache locales. No aportan al proyecto.

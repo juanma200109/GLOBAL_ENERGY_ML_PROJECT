@@ -299,4 +299,23 @@ def crear_box_plot_interactivo(data, nombre_col1, lista_col_datos, etiqueta_eje_
     # Guardar el gráfico como un archivo HTML
     pio.write_html(fig, file='../outputs/html/grafico_lineas_interactivo'+'_'+titulo_caracteristico+'_'+'.html', auto_open=True)
 
-    
+
+def graficar_resultados_regresion(y_true, y_pred, titulo="Resultados de Regresión"):
+    """
+    Gráfico de dispersión de valores reales vs predichos para evaluar un modelo de regresión.
+
+    Parámetros:
+    - y_true: valores reales (serie o array)
+    - y_pred: valores predichos por el modelo
+    - titulo: título del gráfico
+    """
+    plt.figure(figsize=(10, 8))
+    sns.scatterplot(x=y_true, y=y_pred, alpha=0.6)
+    plt.plot([y_true.min(), y_true.max()], [y_true.min(), y_true.max()], '--r', linewidth=2, label='Línea ideal')
+    plt.xlabel("Valores reales")
+    plt.ylabel("Valores predichos")
+    plt.title(titulo)
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
