@@ -329,33 +329,36 @@ def entrenar_modelo_clasificacion_base(X_train, y_train, X_test, y_test,
         - model_cls: modelo entrenado
     """
 
-    print("Entrenando modelo base RandomForestClassifier...")
+    if os.path.exists(ruta_modelo):
+        model_cls = joblib.load(ruta_modelo)
+    else:
+        print("Entrenando modelo base RandomForestClassifier...")
 
-    model_cls = RandomForestClassifier(
-        n_estimators=100,
-        max_depth=10,
-        min_samples_split=5,
-        random_state=42,
-        class_weight='balanced',
-        n_jobs=-1
-    )
+        model_cls = RandomForestClassifier(
+            n_estimators=100,
+            max_depth=10,
+            min_samples_split=5,
+            random_state=42,
+            class_weight='balanced',
+            n_jobs=-1
+        )
 
-    model_cls.fit(X_train, y_train)
+        model_cls.fit(X_train, y_train)
 
-    y_pred = model_cls.predict(X_test)
-    y_proba = model_cls.predict_proba(X_test)[:, 1]
+        y_pred = model_cls.predict(X_test)
+        y_proba = model_cls.predict_proba(X_test)[:, 1]
 
-    # Evaluación
-    print(f"Accuracy Base: {accuracy_score(y_test, y_pred):.2f}")
-    print(f"Precision Base: {precision_score(y_test, y_pred):.2f}")
-    print(f"Recall Base: {recall_score(y_test, y_pred):.2f}")
-    print(f"F1-Score Base: {f1_score(y_test, y_pred):.2f}")
-    print(f"ROC AUC Base: {roc_auc_score(y_test, y_proba):.2f}")
+        # Evaluación
+        print(f"Accuracy Base: {accuracy_score(y_test, y_pred):.2f}")
+        print(f"Precision Base: {precision_score(y_test, y_pred):.2f}")
+        print(f"Recall Base: {recall_score(y_test, y_pred):.2f}")
+        print(f"F1-Score Base: {f1_score(y_test, y_pred):.2f}")
+        print(f"ROC AUC Base: {roc_auc_score(y_test, y_proba):.2f}")
 
-    # Guardar modelo
-    os.makedirs(os.path.dirname(ruta_modelo), exist_ok=True)
-    joblib.dump(model_cls, ruta_modelo)
-    print(f"Modelo guardado en: {ruta_modelo}")
+        # Guardar modelo
+        os.makedirs(os.path.dirname(ruta_modelo), exist_ok=True)
+        joblib.dump(model_cls, ruta_modelo)
+        print(f"Modelo guardado en: {ruta_modelo}")
 
     # Visualización: Matriz de Confusión
     cm = confusion_matrix(y_test, y_pred)
