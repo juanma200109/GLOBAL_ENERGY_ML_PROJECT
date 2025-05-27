@@ -316,7 +316,7 @@ def entrenar_modelo_xgboost_regresion(X_train, y_train, X_test, y_test,
 # ==============================================================================
 
 def entrenar_modelo_clasificacion_base(X_train, y_train, X_test, y_test, 
-                                       ruta_modelo='../models/initial_random_forest_classifier.joblib'):
+                                       ruta_modelo='../models/forest_model/initial_random_forest_classifier.joblib'):
     """
     Entrena un modelo base RandomForestClassifier y evalúa su desempeño.
 
@@ -383,7 +383,7 @@ def entrenar_modelo_clasificacion_base(X_train, y_train, X_test, y_test,
 # ==============================================================================
 
 def entrenar_modelo_clasificacion_tuned(X_train, y_train, X_test, y_test,
-                                        ruta_modelo='../models/best_random_forest_classifier.joblib',
+                                        ruta_modelo='../models/forest_model/best_random_forest_classifier.joblib',
                                         tscv=None):
     """
     Entrena y optimiza un modelo Random Forest para clasificación usando GridSearchCV.
