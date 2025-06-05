@@ -116,7 +116,7 @@ def entrenar_modelos_prophet(df_prophet, nombre_variable, unidad, prefijo,
 
         m = Prophet(
             seasonality_mode='additive',
-            changepoint_prior_scale=0.3,
+            changepoint_prior_scale=0.75,
             yearly_seasonality=True,
             weekly_seasonality=False,
             daily_seasonality=False,
