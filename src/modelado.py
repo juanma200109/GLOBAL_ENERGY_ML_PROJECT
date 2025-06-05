@@ -115,7 +115,7 @@ def entrenar_modelos_prophet(df_prophet, nombre_variable, unidad, prefijo,
         df_country = df_prophet[df_prophet['Country'] == country].copy()
 
         m = Prophet(
-            seasonality_mode='additive',
+            seasonality_mode='multiplicative',
             changepoint_prior_scale=0.75,
             yearly_seasonality=True,
             weekly_seasonality=False,
