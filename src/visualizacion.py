@@ -119,6 +119,7 @@ def crear_grafico_correlacion(data, cols, agrupar_por, titulo):
 # ==============================================================================
 # Función para crear un gráfico interactivo de lineas
 # ==============================================================================
+
 def crear_grafico_lineas_interactivo(data, col_car1, col_car2, lista_col_datos, etiqueta_eje_x, titulo_base):
     """
     Entradas:
@@ -204,6 +205,10 @@ def crear_grafico_lineas_interactivo(data, col_car1, col_car2, lista_col_datos, 
     fig.show()
     # Guardar el gráfico como un archivo HTML
     pio.write_html(fig, file='../outputs/html/grafico_lineas_interactivo'+'_'+titulo_base+'_'+'.html', auto_open=True)
+
+# ==============================================================================
+# Función para crear gráficos de boxplot interactivos
+# ==============================================================================
 
 def crear_box_plot_interactivo(data, nombre_col1, lista_col_datos, etiqueta_eje_x, titulo_caracteristico):
     """
@@ -299,6 +304,9 @@ def crear_box_plot_interactivo(data, nombre_col1, lista_col_datos, etiqueta_eje_
     # Guardar el gráfico como un archivo HTML
     pio.write_html(fig, file='../outputs/html/grafico_lineas_interactivo'+'_'+titulo_caracteristico+'_'+'.html', auto_open=True)
 
+# ==============================================================================
+# Función para graficar resultados de regresión
+# ==============================================================================
 
 def graficar_resultados_regresion(y_true, y_pred, titulo="Resultados de Regresión"):
     """
