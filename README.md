@@ -47,6 +47,8 @@ Este proyecto analiza un conjunto de datos que abarca dos décadas (2000-2024) d
 
 ## 4. Fuentes de Datos
 - **Global Energy Consumption (2000-2024):** Dataset original que contiene métricas de consumo energético, uso per cápita, participación de renovables, dependencia fósil y emisiones de $\text{CO}_2$ por país y año.
+<br>
+- **dataset:** [Consumo de Energía Global (2000-2024)](https://www.kaggle.com/datasets/atharvasoundankar/global-energy-consumption-2000-2024 ) 
 
 ## 5. Visualización y Reportes
 Los resultados y visualizaciones clave se encuentran en los siguientes notebooks:
